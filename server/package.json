@@ -1,0 +1,38 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/index.js",
+  "scripts": {
+    "start": "node ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@tensorflow/tfjs": "^3.7.0",
+    "@tensorflow/tfjs-node": "^3.7.0",
+    "aws-sdk": "^2.868.0",
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.0",
+    "cloudflare": "^2.7.0",
+    "connect-mongodb-session": "^2.4.1",
+    "discord-webhook-node": "^1.1.8",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
+    "express-mysql-session": "^2.1.5",
+    "express-rate-limit": "^5.2.6",
+    "express-session": "^1.17.1",
+    "express-useragent": "^1.0.15",
+    "fast-folder-size": "^1.0.3",
+    "helmet": "^4.4.1",
+    "mime": "^2.5.2",
+    "mkdirp": "^1.0.4",
+    "mongoose": "^5.12.13",
+    "multer": "^1.4.2",
+    "mysql": "^2.18.1",
+    "node-fetch": "^2.6.1",
+    "nsfwjs": "^2.4.1",
+    "uuid": "^8.3.2",
+    "vhost": "^3.0.2"
+  }
+}

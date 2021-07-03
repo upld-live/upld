@@ -1,0 +1,6 @@
+store
+node_modules
+build
+keys.json
+config.json
+migrate.js

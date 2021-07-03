@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>404 File not found!!1!!!!1111!!!</title>
+    <style>
+        * {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: black;
+        }
+
+        .content {
+            font-size: 150%;
+            color: white !important;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .c1 {
+            color: white !important;
+            margin-top: 50px;
+        }
+
+        .m {
+            position: absolute;
+            width: 300px;
+            height: 25px;
+            bottom: 0px;
+            right: 25%;
+            left: 50%;
+            margin-left: -150px;
+            font-size: 75%;
+        }
+
+        .hh {
+            margin-top: 50px;
+            font-size: 65%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="content">
+        <h1>404</h1>
+        <div class="c1">
+            <p>The requested upload could not be found</p>
+            <p class="hh"><b><i>Please check that the current url (<span id="b"></span>) is correct!</i></b></p>
+            <p class="m" align="center"><a style="color: lightblue" href="https://upld.live">upld.live</a></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("b").innerHTML = window.location.href;
+    </script>
+</body>
+
+</html>

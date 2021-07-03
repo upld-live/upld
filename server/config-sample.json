@@ -1,0 +1,26 @@
+{
+  "cf-email": "YOUR_CLOUDFLARE_EMAIL",
+  "cf-key": "YOUR_CLOUDFLARE_API_KEY",
+  "mongoURL": "YOUR_MONGODB_URL",
+  "expressSessionSecret": "RANDOM_SECRET_KEY",
+  "s3-access-id": "YOUR_AWS_ACCESS_ID",
+  "s3-access-key": "YOUR_AWS_ACCESS_KEY",
+  "keyToken": "PASSWORD_TO_RETRIEVE_KEY_FROM_API",
+  "feedbackHookURL": "DISCORD_WEBHOOK_FEEDBACK",
+  "reportHookURL": "DISCORD_WEBHOOK_REPORT",
+  "updateHookURL": "DISCORD_WEBHOOK_UPDATES",
+  "audit": {
+    "upload": 0,
+    "deleteUpload": 1,
+    "createSubdomain": 2,
+    "deleteSubdomain": 3,
+    "listSubdomains": 4,
+    "resetKey": 5,
+    "login": 6,
+    "logout": 7,
+    "listUploads": 8,
+    "changePfp": 9,
+    "toggleEmbed": 10,
+    "changeColor": 11
+  }
+}
