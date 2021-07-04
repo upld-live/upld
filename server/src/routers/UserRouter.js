@@ -341,7 +341,32 @@ class UserRouter {
     }
 
     createUser(app, db) {
-        app.post('/api/v1/user/create', (req, res) => {
+        app.post('/api/v1/user/create', async (req, res) => {
+            let username = req.body.username;
+            let pswrd = req.body.password;
+            let email = req.body.email;
+            let secretKey = this.makeSecret();
+            let userAgent = req.get('User-Agent');
+            let ip = (req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for'] || req.connection.remoteAddress);
+
+            /*
+                Check if the username provided already exists in the db
+            */
+            let b = false;
+            await UserModel.findOne({ username }, (err, user) => {
+                if (user && user !== (undefined || null)) {
+                    b = true;
+                }
+            });
+
+            if (b) {
+                res.json({
+                    success: false,
+                    error: 'There is already a user with that username. Please try again!',
+                });
+                return false;
+            }
+
             /*
                 Check the keys.json file to see if the key provided in 
                 request is valid and exists.
@@ -370,13 +395,6 @@ class UserRouter {
                 }
             });
 
-            let username = req.body.username;
-            let pswrd = req.body.password;
-            let email = req.body.email;
-            let secretKey = this.makeSecret();
-            let userAgent = req.get('User-Agent');
-            let ip = (req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for'] || req.connection.remoteAddress);
-
             if (username === undefined || pswrd === undefined) {
                 return res.end(JSON.stringify({
                     success: false,
@@ -390,26 +408,6 @@ class UserRouter {
                     error: 'No email was provided. Please try again'
                 }));
             }
-
-            /*
-                Check if the username provided already exists in the db
-            */
-            UserModel.findOne({ username }, (err, user) => {
-                if (err) {
-                    res.json({
-                        success: false,
-                        error: errMsg
-                    });
-                    return false;
-                }
-
-                if (user) {
-                    return res.end(JSON.stringify({
-                        success: false,
-                        error: 'There is already a user with that username. Please try again'
-                    }));
-                }
-            });
 
             let password = bcrypt.hashSync(pswrd, 9);
 
