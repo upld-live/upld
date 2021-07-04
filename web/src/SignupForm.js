@@ -13,12 +13,13 @@ class LoginForm extends React.Component {
         this.state = {
             username: '',
             password: '',
+            confirmPassword: '',
             key: '',
             email: '',
             buttonDisabled: false,
             show: false,
             message: '',
-            disabled: false
+            enabled: false
         }
     }
 
@@ -43,6 +44,7 @@ class LoginForm extends React.Component {
             return {
                 username: '',
                 password: '',
+                confirmPassword: '',
                 key: '',
                 email: '',
                 buttonDisabled: false
@@ -58,6 +60,14 @@ class LoginForm extends React.Component {
 
     async doSignup() {
         if (!this.state.username || !this.state.password || !this.state.key || !this.state.email) {
+            return;
+        }
+
+        if (this.state.password !== this.state.confirmPassword) {
+            this.setState({
+                enabled: true,
+                message: 'Passwords do not match!',
+            });
             return;
         }
 
@@ -84,12 +94,18 @@ class LoginForm extends React.Component {
             if (result && result.success) {
                 window.location.reload();
             } else if (result && !result.success) {
-                this.resetForm();
                 this.setState((state) => {
                     console.log(result.error);
                     return {
-                        disabled: true,
+                        enabled: true,
                         message: result.error
+                    };
+                });
+            } else {
+                this.setState((state) => {
+                    return {
+                        enabled: true,
+                        message: 'An error has occured, please try again.'
                     };
                 });
             }
@@ -112,7 +128,7 @@ class LoginForm extends React.Component {
                     </Modal.Header>
                     <Modal.Body>
                         <Form>
-                            <Alert variant="danger" show={this.state.disabled}>
+                            <Alert variant="danger" show={this.state.enabled}>
                                 {this.state.message}
                             </Alert>
                             <p><b style={{ color: 'red' }}>WARNING: No matter what, do NOT share your signup key/upload key with anyone. This could potentially expose your uploads and more!</b></p>
@@ -129,6 +145,13 @@ class LoginForm extends React.Component {
                                 placeholder='Password'
                                 value={this.state.password ? this.state.password : ''}
                                 onChange={(val) => this.setInputValue('password', val)}
+                            />
+
+                            <InputField
+                                type='password'
+                                placeholder='Confirm Password'
+                                value={this.state.confirmPassword ? this.state.confirmPassword : ''}
+                                onChange={(val) => this.setInputValue('confirmPassword', val)}
                             />
 
                             <InputField
