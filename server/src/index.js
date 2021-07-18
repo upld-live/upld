@@ -8,7 +8,7 @@ const ascii = "8 8888      88 8 888888888o   8 8888         8 888888888o.\n8 888
 console.log(ascii);
 
 start = () => {
-    const express = require('express');
+    const express = require('express'); 
     const app = express();
 
     // You can change the port by modifying the PORT enviornment variable in the Dockerfile
@@ -53,7 +53,7 @@ start = () => {
     // This variable if enabled disables redirecting to upld.live when the request 
     // hostname is not upld.live.
 
-    const isDev = true;
+    const isDev = !process.env.PROD || true;
 
     const apiLimiter = rateLimit({
         windowMs: 15 * 60 * 1000,
