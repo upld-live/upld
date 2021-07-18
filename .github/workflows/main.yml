@@ -32,7 +32,7 @@ jobs:
         run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
         
       - name: Get SSH key 
-        run: echo ${{ secrets.ppk }} >> ~/openssh_key
+        run: echo `${{ secrets.ppk }}` >> ~/openssh_key
         
       - name: Deploy with SSH
         run: ssh -i ~/openssh_key ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd /opt/upld/; git stash; git merge; yarn install; yarn build; forever stopall; rm -r ../server/build; mv ./build ../server/; cd ../server/; yarn install; forever stopall; export PROD=true; forever start --minUptime 1000 --spinSleepTime 1000 ./src/index.js"
