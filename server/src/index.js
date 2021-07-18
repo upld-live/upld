@@ -189,11 +189,11 @@ start = () => {
                             );
                             return true;
                         } else {
-                            res.sendFile(path.join(__dirname, 'store', 'files', imgId + '.' + ext));
+                            res.sendFile(path.join(__dirname, '..', 'store', 'files', imgId + '.' + ext));
                         }
                     });
                 } else {
-                    res.sendFile(path.join(__dirname, 'store', 'files', imgId + '.' + file.extension));
+                    res.sendFile(path.join(__dirname, '..', 'store', 'files', imgId + '.' + file.extension));
                 }
             } else {
                 res.status(404).sendFile(path.join(__dirname, '404.html'));
