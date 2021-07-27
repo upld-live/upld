@@ -20,7 +20,7 @@ class AdminStats extends React.Component {
         let result = await res.json();
 
         this.setState({
-            latestUpdate: result
+            latestUpdate: result,
         });
     }
 
