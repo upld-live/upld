@@ -1579,6 +1579,7 @@ class ApiRouter {
                     }
 
                     let id = this.makeid(10);
+
                     // Check if id already exists
                     FileModel.findOne({ id }, (err, file) => {
                         if (file) {
@@ -1630,11 +1631,11 @@ class ApiRouter {
                     req.files.image.mv(filePath);
 
                     // Start NSFW check job if file is an image
-                    if (mime.getType(req.files.image.name).includes('image')) {
+                    /*if (mime.getType(req.files.image.name).includes('image')) {
                         runNSFEvaluation(req.files.image.data, id);
-                    }
+                    }*/
 
-                    res.end(JSON.stringify(responseData));
+                    res.json(responseData);
                     return true;
                 } else {
                     res.json({
