@@ -1,8 +1,14 @@
+/*
+    upld is an easy to use, simple file uploader made for use with ShareX.
+
+    Email runa [at] runa (dot) live for any help.
+*/
+
 const ascii = "8 8888      88 8 888888888o   8 8888         8 888888888o.\n8 8888      88 8 8888    `88. 8 8888         8 8888    `^888.\n8 8888      88 8 8888     `88 8 8888         8 8888        `88.\n8 8888      88 8 8888     ,88 8 8888         8 8888         `88\n8 8888      88 8 8888.   ,88' 8 8888         8 8888          88\n8 8888      88 8 888888888P'  8 8888         8 8888          88\n8 8888      88 8 8888         8 8888         8 8888         ,88\n` 8888     ,8P 8 8888         8 8888         8 8888        ,88'\n  8888, d8P  8 8888         8 8888         8 8888, o88P'\n   `Y88888P'   8 8888         8 888888888888 8 888888888P'\n";
 console.log(ascii);
 
 start = () => {
-    const express = require('express');
+    const express = require('express'); 
     const app = express();
 
     // You can change the port by modifying the PORT enviornment variable in the Dockerfile
@@ -43,7 +49,11 @@ start = () => {
 
     const rateLimit = require('express-rate-limit');
 
-    const isDev = true;
+    // isDev is enabled by default and should be disabled in a production enviornment. 
+    // This variable if enabled disables redirecting to upld.live when the request 
+    // hostname is not upld.live.
+
+    const isDev = !process.env.PROD || true;
 
     const apiLimiter = rateLimit({
         windowMs: 15 * 60 * 1000,
@@ -101,6 +111,11 @@ start = () => {
         // This is for one of my friends just keep it
         if (req.hostname === 'sailor-is-my.world') {
             res.redirect('https://love.sailor-is-my.world');
+            return;
+        }
+
+        if (req.hostname === 'sookie-is-my.world') {
+            res.redirect('https://love.sookie-is-my.world');
             return;
         }
 
@@ -202,6 +217,8 @@ start = () => {
         });
     });
 
+    // The thumbnail is used for image previews in the dashboard and
+    // is also used for embedding images on discord.
     app.get('/:img/thumb', (req, res) => {
         let imgId = req.params.img.split('.')[0];
 
