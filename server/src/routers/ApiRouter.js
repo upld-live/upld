@@ -897,7 +897,7 @@ class ApiRouter {
                 let b = this.humanFileSize(bytes);
                 res.send(JSON.stringify({
                     files,
-                    views: views[0].total,
+                    views: (views[0] ? views[0].total : 0),
                     hosts,
                     subs,
                     size: b,
