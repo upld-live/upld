@@ -17,6 +17,20 @@ class DashboardHomePage extends React.Component {
 
         let result = await res.json();
 
+        if(result === null) {
+            this.setState({
+                latestUpdate: {
+                    title: "No Updates",
+                    added: "",
+                    fixed: "",
+                    changed: "",
+                    date: undefined,
+                    uploader: "N/A",
+                }
+            });
+            return;
+        }
+
         this.setState({
             latestUpdate: result
         });
