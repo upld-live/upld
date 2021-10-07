@@ -614,6 +614,7 @@ class UserRouter {
                                 success: true,
                                 username: user.username,
                                 key: user.uploadKey,
+                                secretKey: user.secretKey,
                                 pfp: user.pfp
                             });
 
