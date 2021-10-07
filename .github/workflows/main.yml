@@ -32,4 +32,4 @@ jobs:
         run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
         
       - name: Deploy with SSH
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd /opt/upld/upld/; git stash; git pull; cd /opt/upld/upld/web; yarn; yarn build; sudo kill -9 $(sudo lsof -t -i:80); rm -r ../server/build; mv ./build ../server/; cd ../server/; yarn; forever stopall; export PROD=true; forever start --minUptime 1000 --spinSleepTime 1000 ./src/index.js"
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd /mnt/upld/upld/; git stash; git pull; cd /mnt/upld/upld/web; yarn; yarn build; sudo kill -9 $(sudo lsof -t -i:80); rm -r ../server/build; mv ./build ../server/; cd ../server/; yarn; forever stopall; export PROD=true; forever start --minUptime 1000 --spinSleepTime 1000 ./src/index.js"
