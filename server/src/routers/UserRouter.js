@@ -602,6 +602,7 @@ class UserRouter {
                                     success: true,
                                     username: user.username,
                                     key: user.uploadKey,
+                                    secretKey: user.secretKey,
                                     isAdmin: user.isAdmin,
                                     pfp: user.pfp
                                 });
