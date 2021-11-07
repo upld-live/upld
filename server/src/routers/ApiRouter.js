@@ -1743,7 +1743,7 @@ class ApiRouter {
 
                     responseData = {
                         url: 'https://' + domain + '/' + id + '.' + extension,
-                        del_url: 'https://' + domain + '/d?text=' + id + '&deletionId=' + deletionId 
+                        del_url: 'https://' + domain + '/d?text=' + id + '&deletionId=' + deletionId
                     };
 
                     TextUploadModel.create(new FileModel({
