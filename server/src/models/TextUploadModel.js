@@ -9,5 +9,5 @@ let fileSchema = mongoose.Schema({
     body: String,
 });
 
-let fileModel = mongoose.model("File", fileSchema);
+let fileModel = mongoose.model("TextUpload", fileSchema);
 module.exports = fileModel;
