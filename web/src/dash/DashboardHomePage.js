@@ -17,7 +17,7 @@ class DashboardHomePage extends React.Component {
 
         let result = await res.json();
 
-        if(result === null) {
+        if (result === null) {
             this.setState({
                 latestUpdate: {
                     title: "No Updates",
@@ -31,8 +31,19 @@ class DashboardHomePage extends React.Component {
             return;
         }
 
+        let added = <p>{result.added.replace("\n", {"\n"})</p>;
+
+        let latestUpdate = {
+            title: result.title,
+            added,
+            fixed,
+            changed,
+            date: result.date,
+            uploader: result.uploader,
+        };
+
         this.setState({
-            latestUpdate: result
+            latestUpdate,
         });
     }
 
@@ -43,7 +54,7 @@ class DashboardHomePage extends React.Component {
                     <div className="container">
                         <h1>Welcome, {this.props.username}!</h1>
                         <br />
-                        <i>Welcome to your dashboard! For any questions, please contact Runabox#0001 on discord.</i>
+                        <i>Welcome to upld's (WIP) dashboard! For any questions, please contact Runabox#0001 on discord.</i>
                     </div>
                 </Jumbotron>
                 <div className="container">

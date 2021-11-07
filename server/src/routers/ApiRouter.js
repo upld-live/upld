@@ -37,6 +37,7 @@ const FileModel = require('../models/FileModel');
 const AuditModel = require('../models/AuditModel');
 const UpdateModel = require('../models/UpdateModel');
 const DomainModel = require('../models/DomainModel');
+const TextUploadModel = require('../models/TextUploadModel');
 
 // upld beta
 const ReportModel = require('../models/ReportModel');
@@ -61,6 +62,7 @@ class ApiRouter {
             this.def(app);
 
             this.upload(app, con);
+            this.textUpload(app, con);
             this.deleteImage(app, con);
 
             this.stats(app, con);
@@ -1634,6 +1636,126 @@ class ApiRouter {
                     /*if (mime.getType(req.files.image.name).includes('image')) {
                         runNSFEvaluation(req.files.image.data, id);
                     }*/
+
+                    res.json(responseData);
+                    return true;
+                } else {
+                    res.json({
+                        success: false,
+                        error: 'Invalid upload key! (If you just changed your upload key please redownload your configs)'
+                    });
+                    return false;
+                }
+            });
+        });
+    }
+
+    textUpload(app, con) {
+        app.post('/textUpload', (req, res) => {
+            res.header('Content-Type', 'application/json');
+            res.header('Accept', 'application/json');
+            res.header('Access-Control-Allow-Origin', '*');
+
+            let body = req.body.body;
+
+            let uploadKey = req.query.key;
+
+            if (uploadKey === undefined) {
+                return res.status(400).send(JSON.stringify({ error: 'No upload key was provided' }));
+            }
+
+            let sub = req.query.domain.split(',')[0];
+            let host = req.query.domain.split(',')[1];
+
+            // Check if domain is valid first
+            DomainModel.findOne({ host, sub }, (err, domain) => {
+                if (err) {
+                    res.end(JSON.stringify({
+                        success: false,
+                        error: 'An error has occured. Please try again'
+                    }));
+                    return false;
+                }
+
+                if (!domain) {
+                    return res.status(400).send(JSON.stringify({ error: 'Domain does not exist. Please try again' }));
+                }
+            });
+
+            UserModel.findOne({ uploadKey }, async (err, user) => {
+                if (err) {
+                    console.log(err);
+                    res.end(JSON.stringify({
+                        success: false,
+                        error: 'An error has occured. Please try again'
+                    }));
+                    return false;
+                }
+
+                if (user) {
+                    if (user.isTerminated) {
+                        res.end(JSON.stringify({
+                            success: false,
+                            error: 'This user is permanently banned. Contact Runabox#0001 on discord for more information.'
+                        }));
+                        return false;
+                    }
+
+                    // Check if user owns the domain
+                    DomainModel.findOne({ owner: user.username, sub, host }, (err, domain) => {
+                        if (err) {
+                            console.log(err);
+                            res.end(JSON.stringify({
+                                success: false,
+                                error: 'An error has occured. Please try again'
+                            }));
+                            return false;
+                        }
+
+                        if (!domain) {
+                            res.end(JSON.stringify({
+                                success: false,
+                                error: 'User does not own domain and therefore cannot upload to it. Please try again'
+                            }));
+                            return false;
+                        }
+                    });
+
+                    let id = this.makeid(10);
+
+                    // Check if id already exists
+                    TextUploadModel.findOne({ id }, (err, file) => {
+                        if (file) {
+                            id = this.makeid(10);
+                        }
+                    });
+
+                    const deletionId = uuidv4();
+
+                    console.log("[" + new Date().toLocaleTimeString() + "] Uploading text with id " + id + " and deletion id " + deletionId);
+
+                    var responseData;
+
+                    let domain = sub + '.' + host;
+                    if (sub === 'root') {
+                        domain = host;
+                    }
+
+                    responseData = {
+                        url: 'https://' + domain + '/' + id + '.' + extension,
+                        del_url: 'https://' + domain + '/d?text=' + id + '&deletionId=' + deletionId 
+                    };
+
+                    TextUploadModel.create(new FileModel({
+                        id,
+                        deletionId,
+                        domain,
+                        body,
+                        dateCreated: new Date(),
+                        uploader: user.username
+                    }));
+
+                    this.audit(user.username, config.audit.upload, `User uploaded text with id ${id} and deletion id ${deletionId}`, con, (req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for'] || req.connection.remoteAddress));
 
                     res.json(responseData);
                     return true;

@@ -353,8 +353,8 @@ class UserRouter {
                 Check if the username provided already exists in the db
             */
             let b = false;
-            await UserModel.findOne({ username }, (err, user) => {
-                if (user && user !== (undefined || null)) {
+            await UserModel.findOne({ username, email }, (err, user) => {
+                if (err || user && user !== (undefined || null)) {
                     b = true;
                 }
             });
@@ -362,7 +362,7 @@ class UserRouter {
             if (b) {
                 res.json({
                     success: false,
-                    error: 'There is already a user with that username. Please try again!',
+                    error: 'There is already a user with that username or email. Please try again!',
                 });
                 return false;
             }

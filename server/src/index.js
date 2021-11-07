@@ -8,7 +8,7 @@ const ascii = "8 8888      88 8 888888888o   8 8888         8 888888888o.\n8 888
 console.log(ascii);
 
 start = () => {
-    const express = require('express'); 
+    const express = require('express');
     const app = express();
 
     // You can change the port by modifying the PORT enviornment variable in the Dockerfile
@@ -23,6 +23,8 @@ start = () => {
         accessKeyId: config['s3-access-id'],
         secretAccessKey: config['s3-access-key']
     });
+
+    const TextUploadModel = require('./models/TextUploadModel');
 
     const fileUpload = require('express-fileupload');
 
@@ -211,8 +213,24 @@ start = () => {
                     res.sendFile(path.join(__dirname, '..', 'store', 'files', imgId + '.' + file.extension));
                 }
             } else {
-                res.status(404).sendFile(path.join(__dirname, '404.html'));
-                return false;
+                TextUploadModel.findOne({ id: imgId }, (err, file) => {
+                    if (err) {
+                        res.status(404).sendFile(path.join(__dirname, '404.html'));
+                        return false;
+                    }
+
+                    if (file) {
+                        if (req.hostname !== file.domain) {
+                            res.status(404).sendFile(path.join(__dirname, '404.html'));
+                            return false;
+                        }
+
+                        return res.send(file.body);
+                    } else {
+                        res.status(404).sendFile(path.join(__dirname, '404.html'));
+                        return false;
+                    }
+                });
             }
         });
     });
