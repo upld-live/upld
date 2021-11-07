@@ -1742,11 +1742,11 @@ class ApiRouter {
                     }
 
                     responseData = {
-                        url: 'https://' + domain + '/' + id + '.' + extension,
+                        url: 'https://' + domain + '/' + id,
                         del_url: 'https://' + domain + '/d?text=' + id + '&deletionId=' + deletionId
                     };
 
-                    TextUploadModel.create(new FileModel({
+                    TextUploadModel.create(new TextUploadModel({
                         id,
                         deletionId,
                         domain,

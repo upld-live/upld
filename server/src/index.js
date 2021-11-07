@@ -225,6 +225,7 @@ start = () => {
                             return false;
                         }
 
+                        res.header('Content-Type', 'text/plain');
                         return res.send(file.body);
                     } else {
                         res.status(404).sendFile(path.join(__dirname, '404.html'));
