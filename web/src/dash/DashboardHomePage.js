@@ -32,6 +32,8 @@ class DashboardHomePage extends React.Component {
         }
 
         let added = result.added;
+        let fixed = result.fixed;
+        let changed = result.changed;
 
         let latestUpdate = {
             title: result.title,
