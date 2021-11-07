@@ -31,7 +31,7 @@ class DashboardHomePage extends React.Component {
             return;
         }
 
-        let added = <p>{result.added.replace("\n", {"\n"})</p>;
+        let added = result.added;
 
         let latestUpdate = {
             title: result.title,
