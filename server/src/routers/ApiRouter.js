@@ -20,6 +20,8 @@ const cf = require('cloudflare')({
     key: config['cf-key']
 });
 
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+
 const feedbackHook = new Webhook(config.feedbackHookURL);
 const reportHook = new Webhook(config.reportHookURL);
 const updateHook = new Webhook(config.updateHookURL);
