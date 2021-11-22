@@ -10,11 +10,6 @@ const fastFolderSize = require('fast-folder-size');
 
 const config = require('../../config.json');
 
-const nsfwjs = require('nsfwjs');
-const tf = require('@tensorflow/tfjs-node')
-
-const mime = require("mime");
-
 const cf = require('cloudflare')({
     email: config['cf-email'],
     key: config['cf-key']
@@ -1651,7 +1646,7 @@ class ApiRouter {
 
                         let reslt = await ressss.json();
                         console.log(reslt);
-                    } catch (e) { }
+                    } catch (e) { console.log(e) }
 
                     // Start NSFW check job if file is an image
                     /*if (mime.getType(req.files.image.name).includes('image')) {
@@ -1791,42 +1786,41 @@ class ApiRouter {
         });
     }
 
-    async runNSFEvaluation(imgData, fileID) {
-        try {
-            let model = await nsfwjs.load();
-            let image = await tf.node.decodeImage(imgData, 3);
-            let predictions = await model.classify(image);
-            image.dispose();
+    // async runNSFEvaluation(imgData, fileID) {
+    //     try {
+    //         let model = await nsfwjs.load();
+    //         let predictions = await model.classify(image);
+    //         image.dispose();
 
-            // Default to false
-            let isNSFW = false;
+    //         // Default to false
+    //         let isNSFW = false;
 
-            // Go through each prediction and if NSFW check its probability 
-            predictions.forEach(prediction => {
-                switch (prediction.className) {
-                    case 'Hentai' || 'Porn' || 'Sexy':
-                        if (prediction.probability >= 15) {
-                            isNSFW = true;
-                            return;
-                        }
+    //         // Go through each prediction and if NSFW check its probability 
+    //         predictions.forEach(prediction => {
+    //             switch (prediction.className) {
+    //                 case 'Hentai' || 'Porn' || 'Sexy':
+    //                     if (prediction.probability >= 15) {
+    //                         isNSFW = true;
+    //                         return;
+    //                     }
 
-                        break;
-                }
-            });
+    //                     break;
+    //             }
+    //         });
 
-            FileModel.findOne({ id: fileID }, (err, file) => {
-                if (err)
-                    return false;
+    //         FileModel.findOne({ id: fileID }, (err, file) => {
+    //             if (err)
+    //                 return false;
 
-                file.isNSFW = isNSFW;
-                file.save();
-            });
+    //             file.isNSFW = isNSFW;
+    //             file.save();
+    //         });
 
-            return true;
-        } catch (e) {
-            console.error(`Error in NSFW evaluation: ${e}`);
-        }
-    }
+    //         return true;
+    //     } catch (e) {
+    //         console.error(`Error in NSFW evaluation: ${e}`);
+    //     }
+    // }
 
     queryIfDeletionIdIsValid(deletionId, image, con) {
         var toReturn = true;
