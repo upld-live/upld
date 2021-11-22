@@ -1645,6 +1645,7 @@ class ApiRouter {
                                 "timestamp": date.toISOString(),
                                 "uploader": user.username,
                                 "uploadId": id,
+                                domain
                             }),
                         });
 
