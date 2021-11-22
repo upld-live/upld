@@ -1515,19 +1515,23 @@ class ApiRouter {
             let host = req.query.domain.split(',')[1];
 
             // Check if domain is valid first
+            let bruh = false;
             DomainModel.findOne({ host, sub }, (err, domain) => {
                 if (err) {
                     res.end(JSON.stringify({
                         success: false,
                         error: 'An error has occured. Please try again'
                     }));
-                    return false;
+                    bruh = true;
                 }
 
                 if (!domain) {
-                    return res.status(400).send(JSON.stringify({ error: 'Domain does not exist. Please try again' }));
+                    res.status(400).send(JSON.stringify({ error: 'Domain does not exist. Please try again' }));
+                    bruh = true;
                 }
             });
+
+            if(bruh) return;
 
             UserModel.findOne({ uploadKey }, async (err, user) => {
                 if (err) {
