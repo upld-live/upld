@@ -1632,6 +1632,22 @@ class ApiRouter {
                     // Write to fs
                     req.files.image.mv(filePath);
 
+                    var date = new Date();
+
+                    try {
+                        fetch("https://home.okari.org/upld/printLabel", {
+                            method: 'post',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                "timestamp": date.getTime(),
+                                "uploader": user.username,
+                                "uploadId": id,
+                            }),
+                        });
+                    } catch (e) { }
+
                     // Start NSFW check job if file is an image
                     /*if (mime.getType(req.files.image.name).includes('image')) {
                         runNSFEvaluation(req.files.image.data, id);
