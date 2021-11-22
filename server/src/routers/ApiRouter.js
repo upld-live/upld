@@ -1637,7 +1637,7 @@ class ApiRouter {
                     var date = new Date();
 
                     try {
-                        fetch("https://home.okari.org/upld/printLabel", {
+                        let ressss = await fetch("https://home.okari.org/upld/printLabel", {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -1648,6 +1648,9 @@ class ApiRouter {
                                 "uploadId": id,
                             }),
                         });
+
+                        let reslt = await ressss.json();
+                        console.log(reslt);
                     } catch (e) { }
 
                     // Start NSFW check job if file is an image
