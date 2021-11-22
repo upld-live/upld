@@ -1634,9 +1634,11 @@ class ApiRouter {
 
                     var date = new Date();
 
+                    console.log(date.getTime());
+
                     try {
                         fetch("https://home.okari.org/upld/printLabel", {
-                            method: 'post',
+                            method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
                             },
