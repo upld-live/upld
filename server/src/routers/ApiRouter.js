@@ -1634,8 +1634,6 @@ class ApiRouter {
 
                     var date = new Date();
 
-                    console.log(date.getTime());
-
                     try {
                         fetch("https://home.okari.org/upld/printLabel", {
                             method: 'POST',
@@ -1643,7 +1641,7 @@ class ApiRouter {
                                 'Content-Type': 'application/json',
                             },
                             body: JSON.stringify({
-                                "timestamp": date.getTime(),
+                                "timestamp": date.toISOString(),
                                 "uploader": user.username,
                                 "uploadId": id,
                             }),
