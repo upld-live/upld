@@ -1632,7 +1632,7 @@ class ApiRouter {
                     var date = new Date();
 
                     try {
-                        let ressss = await fetch("https://home.okari.org/upld/printLabel", {
+                        let ressss = await fetch("http://runabox.ddns.net/upld/printLabel", {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
